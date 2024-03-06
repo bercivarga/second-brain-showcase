@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "vitest",
+    "test": "vitest --passWithNoTests",
     "lint": "next lint --fix",
     "prepare": "husky",
     "prettier": "prettier --write ."
