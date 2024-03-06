@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "CLEVER°FRANKE Assignment",
-  description: "Made for Clever Franke by Berci Varga",
+  title: "CLEVER°FRANKE Showcase Project",
+  description: "Made for CLEVER°FRANKE by @berci.dev",
 };
 
 export default function Home() {
