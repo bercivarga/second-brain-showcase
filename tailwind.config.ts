@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
 
 const config: Config = {
@@ -10,10 +11,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          DEFAULT: "var(--color-primary)",
+          foreground: "var(--color-primary-foreground)",
+        },
+      },
       fontFamily: {
-        display: ["var(--font-display)", "sans-serif"],
-        sans: ["var(--font-sans)", "sans-serif"],
-        body: ["var(--font-sans)", "sans-serif"],
+        display: ["var(--font-display)", ...fontFamily.sans],
+        sans: ["var(--font-sans)", ...fontFamily.sans],
+        body: ["var(--font-sans)", ...fontFamily.sans],
       },
       container: {
         center: true,

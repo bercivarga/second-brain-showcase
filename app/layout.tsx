@@ -1,4 +1,4 @@
-import "./globals.css";
+import "@/styles/globals.css";
 
 import { Archivo_Black, Inter } from "next/font/google";
 import { twMerge } from "tailwind-merge";
@@ -23,7 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={twMerge(bodyFont.variable, displayFont.variable)}>
+      <body
+        className={twMerge(
+          bodyFont.variable,
+          displayFont.variable,
+          "antialiased"
+        )}
+      >
         {children}
       </body>
     </html>

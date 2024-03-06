@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 
+import { Button } from "@/components/ui/button";
+
 export const metadata: Metadata = {
   title: "CLEVER°FRANKE Assignment",
   description: "Made for Clever Franke by Berci Varga",
@@ -15,6 +17,7 @@ export default function Home() {
       <h5>Hello world</h5>
       <h6>Hello world</h6>
       <p>This is a paragraph</p>
+      <Button>Click me</Button>
     </main>
   );
 }
