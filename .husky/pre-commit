@@ -1,2 +1,3 @@
-npm lint
-npm prettier
+npm run test
+npm run lint
+npm run prettier
