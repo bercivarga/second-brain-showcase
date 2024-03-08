@@ -74,6 +74,8 @@ const config: Config = {
           "font-family": theme("fontFamily.sans"),
           "font-size": theme("fontSize.base"),
           "font-weight": theme("fontWeight.normal"),
+          "min-height": "100vh",
+          width: "100%",
         },
       });
     }),
