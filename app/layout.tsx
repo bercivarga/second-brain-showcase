@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 
+import { ClerkProvider } from "@clerk/nextjs";
 import { Archivo_Black, Inter } from "next/font/google";
 import { twMerge } from "tailwind-merge";
 
@@ -22,16 +23,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={twMerge(
-          bodyFont.variable,
-          displayFont.variable,
-          "antialiased"
-        )}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={twMerge(
+            bodyFont.variable,
+            displayFont.variable,
+            "antialiased"
+          )}
+        >
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
