@@ -1,18 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { prisma } from "@/lib/db";
-
-async function getNote(noteId: string) {
-  try {
-    const note = await prisma.note.findUnique({
-      where: { id: noteId },
-    });
-
-    return note;
-  } catch (error) {
-    return null;
-  }
-}
+import { getNote } from "@/helpers/notes/getNote";
 
 export default async function EditNotePage({
   params,
@@ -20,7 +8,6 @@ export default async function EditNotePage({
   params: { noteId: string };
 }) {
   const { noteId } = params;
-
   const note = await getNote(noteId);
 
   if (!note) {

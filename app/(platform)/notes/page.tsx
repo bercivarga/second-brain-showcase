@@ -1,45 +1,57 @@
-import { auth } from "@clerk/nextjs";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
+import { Edit2Icon, Edit3Icon } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-import { prisma } from "@/lib/db";
-
-async function getAllNotes() {
-  const { userId } = auth();
-
-  if (!userId) {
-    redirect("/sign-in");
-  }
-
-  try {
-    const dbUser = await prisma.user.findUnique({
-      where: { clerkId: userId },
-      include: { notes: true },
-    });
-
-    if (!dbUser) {
-      return null;
-    }
-
-    return dbUser.notes;
-  } catch (error) {
-    return null;
-  }
-}
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { getAllNotes } from "@/helpers/notes/getAllNotes";
 
 export default async function AllNotesPage() {
   const notes = await getAllNotes();
 
   return (
     <main>
-      <h1>All notes</h1>
-      <ul>
-        {notes?.map((note) => (
-          <li key={note.id}>
-            <Link href={`/notes/${note.id}`}>{note.title}</Link>
-          </li>
-        ))}
-      </ul>
+      <Table>
+        <TableCaption>A list of your recent notes.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Title</TableHead>
+            <TableHead className="w-[300px]">Snippet</TableHead>
+            <TableHead className="w-[200px]">Tags</TableHead>
+            <TableHead className="text-right">Updated</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {notes?.map((note) => (
+            <TableRow key={note.id}>
+              <TableCell>
+                <Link href={`/notes/${note.id}`}>{note.title}</Link>
+              </TableCell>
+              <TableCell>
+                <Link href={`/notes/${note.id}`}>
+                  {note.content.slice(0, 50)}
+                </Link>
+              </TableCell>
+              <TableCell>
+                {note.tags.map((tag) => tag.name).join(", ")}
+              </TableCell>
+              <TableCell className="text-right">
+                <Link href={`/notes/${note.id}`}>
+                  {new Date(note.updatedAt).toLocaleString()}
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </main>
   );
 }

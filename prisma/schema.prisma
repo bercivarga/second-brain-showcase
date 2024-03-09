@@ -61,6 +61,7 @@ model Note {
   sentimentAnalysis SentimentAnalysis? // One-to-one relationship: one note can have one sentiment analysis
   relatedNotes      Note[]             @relation("RelatedNotes") // Many-to-many relationship: a note can be related to multiple other notes
   relatedTo         Note[]             @relation("RelatedNotes") // Reverse relation for related notes
+  deleted           Boolean            @default(false)
 
   @@index([authorId], name: "author_index")
 }
