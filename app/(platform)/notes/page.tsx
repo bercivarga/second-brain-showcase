@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   title: "All notes",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function AllNotesPage() {
   const notes = await getAllNotes();
 

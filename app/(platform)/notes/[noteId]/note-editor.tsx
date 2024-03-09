@@ -11,8 +11,9 @@ type Props = {
   note: NonNullable<Awaited<ReturnType<typeof getNote>>>; // I love TS /s
 };
 
-const debouncedUpdateNoteTitle = debounce(updateNoteTitle, 1000);
-const debouncedUpdateNoteContent = debounce(updateNoteContent, 1000);
+const debounceDelay = 500;
+const debouncedUpdateNoteTitle = debounce(updateNoteTitle, debounceDelay);
+const debouncedUpdateNoteContent = debounce(updateNoteContent, debounceDelay);
 
 export default function NoteEditor({ note }: Props) {
   const [title, setTitle] = useState(note.title);
