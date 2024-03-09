@@ -7,9 +7,12 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main>
-      <h1>Dashboard</h1>
-      <p>hi</p>
+    <main className="px-6 py-4">
+      <h2>Dashboard</h2>
+      <p>
+        Welcome to your dashboard. This is where you can start working on your
+        ideas. You can create new notes, view your recent notes, and more.
+      </p>
     </main>
   );
 }

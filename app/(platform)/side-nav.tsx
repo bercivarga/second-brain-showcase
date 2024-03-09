@@ -8,7 +8,7 @@ import SearchBar from "./search-bar";
 
 export default function SideNav() {
   return (
-    <aside className="flex h-full w-64 flex-col justify-between bg-slate-100/50 p-6">
+    <aside className="flex h-full w-80 flex-col justify-between bg-slate-100/50 p-6">
       <div className="flex flex-col items-stretch gap-4">
         <SearchBar />
         {navItems.map((item) => (

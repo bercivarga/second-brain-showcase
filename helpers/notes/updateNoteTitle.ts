@@ -6,9 +6,9 @@ import { prisma } from "@/lib/db";
 
 type NoteData = Prisma.NoteCreateInput;
 
-export async function updateNoteContent(
+export async function updateNoteTitle(
   noteId: string,
-  data: Pick<NoteData, "content">
+  data: Pick<NoteData, "title">
 ) {
   try {
     return await prisma.note.update({

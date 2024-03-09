@@ -1,3 +1,5 @@
+"use server";
+
 import { prisma } from "@/lib/db";
 
 export async function removeTag(noteId: string, tagName: string) {

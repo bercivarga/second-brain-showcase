@@ -1,3 +1,5 @@
+"use server";
+
 import { prisma } from "@/lib/db";
 
 export async function connectNotes(note1Id: string, note2Id: string) {
