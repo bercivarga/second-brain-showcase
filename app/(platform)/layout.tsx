@@ -8,7 +8,7 @@ export default function RootLayout({
   return (
     <div className="flex h-screen divide-x">
       <SideNav />
-      {children}
+      <div className="px-6 py-2">{children}</div>
     </div>
   );
 }

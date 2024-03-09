@@ -63,6 +63,7 @@ export default function SearchBar() {
                 <CommandItem
                   onSelect={() => {
                     router.push(item.href);
+                    setShowSearchCommand(false);
                   }}
                 >
                   <item.icon className="mr-2 h-4 w-4" />

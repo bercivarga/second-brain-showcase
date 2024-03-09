@@ -56,7 +56,7 @@ model Note {
   title             String
   content           String             @db.Text
   author            User               @relation(fields: [authorId], references: [id])
-  authorId          String             @unique
+  authorId          String
   tags              Tag[] // Many-to-many relationship: one note can have multiple tags
   sentimentAnalysis SentimentAnalysis? // One-to-one relationship: one note can have one sentiment analysis
   relatedNotes      Note[]             @relation("RelatedNotes") // Many-to-many relationship: a note can be related to multiple other notes
