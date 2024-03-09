@@ -28,7 +28,7 @@ export async function GET() {
     const newNote = await prisma.note.create({
       data: {
         title: "New note",
-        content: "Start writing here...",
+        content: "",
         authorId: dbUser.id,
       },
     });

@@ -1,6 +1,7 @@
 "use server";
 
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/db";
 
@@ -17,5 +18,8 @@ export async function updateNoteTitle(
     });
   } catch (error) {
     return null;
+  } finally {
+    revalidatePath("/notes");
+    revalidatePath(`/notes/${noteId}`);
   }
 }

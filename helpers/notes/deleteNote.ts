@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@clerk/nextjs";
+import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/db";
 
@@ -28,5 +29,8 @@ export async function deleteNote(noteId: string) {
     return note;
   } catch (error) {
     return null;
+  } finally {
+    revalidatePath("/notes");
+    revalidatePath(`/notes/${noteId}`);
   }
 }

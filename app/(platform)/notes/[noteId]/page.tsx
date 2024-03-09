@@ -28,7 +28,7 @@ export default async function EditNotePage({ params }: Props) {
   const { noteId } = params;
   const note = await getNote(noteId);
 
-  if (!note) {
+  if (!note || note.deleted) {
     redirect("/notes");
   }
 
@@ -38,3 +38,6 @@ export default async function EditNotePage({ params }: Props) {
     </main>
   );
 }
+
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";

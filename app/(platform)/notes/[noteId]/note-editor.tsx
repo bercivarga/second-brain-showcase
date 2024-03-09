@@ -31,6 +31,7 @@ export default function NoteEditor({ note }: Props) {
       alert("Failed to delete note"); // TODO: better error handling with a toast
       return;
     }
+
     router.push("/notes");
   }
 
@@ -50,6 +51,7 @@ export default function NoteEditor({ note }: Props) {
         <textarea
           className="h-96 resize-none text-lg outline-none"
           value={content}
+          placeholder="Write your note here..."
           onChange={(e) => {
             setContent(e.target.value);
             debouncedUpdateNoteContent(note.id, {
