@@ -14,13 +14,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
-  name      String?
-  clerkId   String   @unique
-  notes     Note[]
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  email          String   @unique
+  name           String?
+  clerkId        String   @unique
+  notes          Note[]
+  canMakeChanges Boolean  @default(true) // Used only to guard against abuse on the test account
 }
 
 model Tag {
