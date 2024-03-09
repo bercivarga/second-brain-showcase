@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  name      String?
+  clerkId   String   @unique
+  notes     Note[]
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String
+  notes Note[] // One-to-many relationship: one tag can be associated with multiple notes
+}
+
+enum Sentiment {
+  VERY_POSITIVE
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+  VERY_NEGATIVE
+}
+
+model SentimentAnalysis {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  note      Note      @relation(fields: [noteId], references: [id])
+  noteId    String    @unique
+  sentiment Sentiment @default(NEUTRAL)
+  score     Float
+  summary   String
+}
+
+model Note {
+  id                String             @id @default(uuid())
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  title             String
+  content           String             @db.Text
+  author            User               @relation(fields: [authorId], references: [id])
+  authorId          String             @unique
+  tags              Tag[] // Many-to-many relationship: one note can have multiple tags
+  sentimentAnalysis SentimentAnalysis? // One-to-one relationship: one note can have one sentiment analysis
+  relatedNotes      Note[]             @relation("RelatedNotes") // Many-to-many relationship: a note can be related to multiple other notes
+  relatedTo         Note[]             @relation("RelatedNotes") // Reverse relation for related notes
+
+  @@index([authorId], name: "author_index")
+}
