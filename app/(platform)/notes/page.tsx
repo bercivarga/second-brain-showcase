@@ -1,8 +1,6 @@
-import { CrossCircledIcon } from "@radix-ui/react-icons";
-import { Edit2Icon, Edit3Icon } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -14,30 +12,40 @@ import {
 } from "@/components/ui/table";
 import { getAllNotes } from "@/helpers/notes/getAllNotes";
 
+export const metadata: Metadata = {
+  title: "All notes",
+};
+
 export default async function AllNotesPage() {
   const notes = await getAllNotes();
 
   return (
-    <main>
+    <main className="px-6 py-4">
       <Table>
         <TableCaption>A list of your recent notes.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Title</TableHead>
+            <TableHead className="w-[200px]">Title</TableHead>
             <TableHead className="w-[300px]">Snippet</TableHead>
             <TableHead className="w-[200px]">Tags</TableHead>
             <TableHead className="text-right">Updated</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody className="whitespace-nowrap">
           {notes?.map((note) => (
             <TableRow key={note.id}>
               <TableCell>
-                <Link href={`/notes/${note.id}`}>{note.title}</Link>
+                <Link href={`/notes/${note.id}`}>
+                  {note.title.length > 20
+                    ? note.title.slice(0, 20) + "..."
+                    : note.title}
+                </Link>
               </TableCell>
               <TableCell>
                 <Link href={`/notes/${note.id}`}>
-                  {note.content.slice(0, 50)}
+                  {note.content.length > 50
+                    ? note.content.slice(0, 50) + "..."
+                    : note.content}
                 </Link>
               </TableCell>
               <TableCell>
@@ -55,3 +63,5 @@ export default async function AllNotesPage() {
     </main>
   );
 }
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";

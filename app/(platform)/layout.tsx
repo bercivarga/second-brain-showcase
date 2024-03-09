@@ -8,7 +8,7 @@ export default function RootLayout({
   return (
     <div className="flex h-screen divide-x">
       <SideNav />
-      <div className="w-full p-4">{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   );
 }

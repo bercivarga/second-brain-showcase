@@ -1,6 +1,5 @@
-"use server";
-
 import { auth } from "@clerk/nextjs";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { prisma } from "@/lib/db";
@@ -31,5 +30,7 @@ export async function getAllNotes() {
     return notes;
   } catch (error) {
     return null;
+  } finally {
+    revalidatePath("/notes");
   }
 }
