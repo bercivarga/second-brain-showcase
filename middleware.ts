@@ -3,7 +3,9 @@ import { authMiddleware } from "@clerk/nextjs";
 export default authMiddleware({
   // Routes that can be accessed while signed out
   publicRoutes: [
-    /^(?!\/dashboard).*/, // Match routes that don't start with "/dashboard"
+    // 👇 Leaving this here so that later I can adjust the middleware logic according to the project's needs
+    // /^(?!\/dashboard).*/, // Match routes that don't start with "/dashboard"
+    "/", // Match the root route
   ],
   // Routes that can always be accessed, and have
   // no authentication information
