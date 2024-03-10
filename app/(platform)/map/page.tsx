@@ -3,11 +3,11 @@ import { getAllNotes } from "@/helpers/notes/getAllNotes";
 import InteractiveMap from "./interactive-map";
 
 export default async function MapPage() {
-  const notes = await getAllNotes();
+  const allNotes = await getAllNotes();
 
   return (
     <main className="relative h-screen w-full">
-      <InteractiveMap notes={notes ?? []} />
+      <InteractiveMap notes={allNotes?.notes ?? []} />
     </main>
   );
 }

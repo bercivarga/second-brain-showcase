@@ -4,7 +4,15 @@ import { redirect } from "next/navigation";
 
 import { prisma } from "@/lib/db";
 
-export async function getAllNotes() {
+const PAGE_SIZE = 12;
+
+export async function getAllNotes({
+  page,
+  paginate = false,
+}: {
+  page?: number;
+  paginate?: boolean;
+} = {}) {
   const { userId } = auth();
 
   if (!userId) {
@@ -20,14 +28,26 @@ export async function getAllNotes() {
       return null;
     }
 
-    const notes = await prisma.note.findMany({
-      where: { authorId: dbUser.id, deleted: false },
-      include: { tags: true, relatedNotes: true, relatedTo: true },
-      orderBy: { updatedAt: "desc" },
-      take: 10,
-    });
+    const transaction = await prisma.$transaction([
+      prisma.note.count({
+        where: { authorId: dbUser.id, deleted: false },
+      }),
+      prisma.note.findMany({
+        where: { authorId: dbUser.id, deleted: false },
+        include: { tags: true, relatedNotes: true, relatedTo: true },
+        orderBy: { updatedAt: "desc" },
+        take: paginate ? PAGE_SIZE : undefined,
+        skip: paginate && page ? (page - 1) * PAGE_SIZE : undefined,
+      }),
+    ]);
 
-    return notes;
+    const [count, notes] = transaction;
+
+    return {
+      count,
+      totalPages: paginate ? Math.ceil(count / PAGE_SIZE) : 1,
+      notes,
+    };
   } catch (error) {
     return null;
   } finally {
