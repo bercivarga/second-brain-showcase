@@ -20,7 +20,7 @@ export async function getNote(noteId: string) {
 
     const note = await prisma.note.findUnique({
       where: { id: noteId, authorId: dbUser.id },
-      include: { tags: true, relatedNotes: true },
+      include: { tags: true, relatedNotes: true, relatedTo: true },
     });
 
     return note;
