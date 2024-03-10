@@ -63,5 +63,6 @@ export default async function AllNotesPage() {
     </main>
   );
 }
+
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
