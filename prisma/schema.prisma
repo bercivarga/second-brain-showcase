@@ -20,14 +20,17 @@ model User {
   email          String   @unique
   name           String?
   clerkId        String   @unique
+  createdTags    Tag[]
   notes          Note[]
   canMakeChanges Boolean  @default(true) // Used only to guard against abuse on the test account
 }
 
 model Tag {
-  id    String @id @default(uuid())
-  name  String
-  notes Note[] // One-to-many relationship: one tag can be associated with multiple notes
+  id      String @id @default(uuid())
+  name    String
+  notes   Note[] // One-to-many relationship: one tag can be associated with multiple notes
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
 }
 
 enum Sentiment {
