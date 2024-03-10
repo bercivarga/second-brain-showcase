@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Interactive map",
+  title: "Map of your notes",
   description: "Explore your notes and their relationships.",
 };
 

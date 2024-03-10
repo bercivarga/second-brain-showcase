@@ -54,15 +54,16 @@ export default function InteractiveMap({ notes }: Props) {
     setData(graphData);
   }, [notes]);
 
-  if (!data)
+  if (!data) {
     return (
       <div
         className="absolute inset-0 flex items-center justify-center bg-slate-900 text-white"
         ref={containerRef}
       >
-        <div>Loading...</div>
+        <div>Preparing your graph...</div>
       </div>
     );
+  }
 
   return (
     <div
@@ -73,11 +74,10 @@ export default function InteractiveMap({ notes }: Props) {
         width={containerRef.current?.clientWidth ?? 0}
         height={containerRef.current?.clientHeight ?? 0}
         graphData={data}
-        nodeAutoColorBy="group"
-        linkDirectionalParticles={2}
-        linkDirectionalParticleWidth={2}
-        linkDirectionalParticleSpeed={0.005}
-        linkDirectionalParticleColor={() => "rgba(255, 255, 255, 0.5)"}
+        nodeAutoColorBy="name"
+        linkDirectionalParticles="value"
+        linkDirectionalParticleSpeed={(d) => d.value * 0.001}
+        linkDirectionalParticleResolution={3}
       />
     </div>
   );
