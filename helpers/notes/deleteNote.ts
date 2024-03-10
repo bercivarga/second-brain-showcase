@@ -31,6 +31,6 @@ export async function deleteNote(noteId: string) {
     return null;
   } finally {
     revalidatePath("/notes");
-    revalidatePath(`/notes/${noteId}`);
+    revalidatePath(`/notes/${noteId}`, "page");
   }
 }

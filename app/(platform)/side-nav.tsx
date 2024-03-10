@@ -12,7 +12,7 @@ export default function SideNav() {
       <nav className="flex flex-col items-stretch gap-4">
         <SearchBar />
         {navItems.map((item) => (
-          <Link key={item.href} href={item.href}>
+          <Link key={item.href} href={item.href} prefetch={false}>
             <Button className="w-full justify-start" variant={"secondary"}>
               <item.icon className="mr-3" />
               {item.label}
