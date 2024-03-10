@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -10,9 +10,11 @@ import { Button } from "@/components/ui/button";
 import { deleteNote } from "@/helpers/notes/deleteNote";
 import { disconnectNotes } from "@/helpers/notes/disconnectNotes";
 import { prepareNoteRelations } from "@/helpers/notes/prepareNoteRelations";
+import { removeTag } from "@/helpers/notes/removeTag";
 import { INote } from "@/types/platform";
 
 import NoteConnector from "./note-connector";
+import TagManager from "./tag-manager";
 
 type Props = {
   note: INote;
@@ -40,6 +42,17 @@ export default function NoteActions({ note }: Props) {
 
     if (!disconnectedNote) {
       alert("Failed to disconnect note"); // TODO: better error handling with a toast
+      return;
+    }
+
+    router.refresh();
+  }
+
+  async function handleDisconnectTag(tagId: string) {
+    const disconnectedNote = await removeTag(note.id, tagId);
+
+    if (!disconnectedNote) {
+      alert("Failed to disconnect tag"); // TODO: better error handling with a toast
       return;
     }
 
@@ -104,11 +117,18 @@ export default function NoteActions({ note }: Props) {
           ) : (
             <ul className="flex flex-wrap gap-2">
               {note.tags.map((tag) => (
-                <li
-                  key={tag.id}
-                  className="rounded-full bg-slate-200 px-3 py-1 text-sm"
-                >
-                  <Badge variant="outline">{tag.name}</Badge>
+                <li key={tag.id}>
+                  <Badge variant="outline">
+                    {tag.name}
+                    <Button
+                      size={"sm"}
+                      variant={"link"}
+                      className="ml-2 h-min w-min p-0 hover:bg-slate-200"
+                      onClick={() => handleDisconnectTag(tag.id)}
+                    >
+                      <Cross1Icon className="h-[10px] w-[10px]" />
+                    </Button>
+                  </Badge>
                 </li>
               ))}
             </ul>
@@ -117,6 +137,7 @@ export default function NoteActions({ note }: Props) {
             className="w-full justify-start"
             variant={"outline"}
             size={"sm"}
+            onClick={() => setShowTagManager(true)}
           >
             <PlusCircledIcon className="mr-3" />
             Manage tags
@@ -139,6 +160,11 @@ export default function NoteActions({ note }: Props) {
         note={note}
         open={showNoteConnector}
         setOpen={setShowNoteConnector}
+      />
+      <TagManager
+        note={note}
+        open={showTagManager}
+        setOpen={setShowTagManager}
       />
     </>
   );

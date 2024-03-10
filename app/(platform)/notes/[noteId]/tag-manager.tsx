@@ -12,10 +12,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { connectNotes } from "@/helpers/notes/connectNotes";
-import { prepareNoteRelations } from "@/helpers/notes/prepareNoteRelations";
-import { searchNotes } from "@/helpers/notes/searchNotes";
+import { addTag } from "@/helpers/notes/addTag";
+import { searchTags } from "@/helpers/notes/searchTags";
 import { INote } from "@/types/platform";
+
+type TagsSearchResult = Awaited<ReturnType<typeof searchTags>>;
 
 type Props = {
   note: INote;
@@ -23,26 +24,24 @@ type Props = {
   setOpen: (open: boolean) => void;
 };
 
-type NotesSearchResult = Awaited<ReturnType<typeof searchNotes>>;
-
-export default function NoteConnector({ note, open, setOpen }: Props) {
-  const [results, setResults] = useState<NotesSearchResult>([]);
+export default function TagManager({ note, open, setOpen }: Props) {
+  const [results, setResults] = useState<TagsSearchResult>([]);
+  const [localSearch, setLocalSearch] = useState("");
 
   const router = useRouter();
 
   const { id: noteId } = note;
 
-  const existingNoteRelationIds = prepareNoteRelations(note).map(
-    (note) => note.id
-  );
+  const existingTags = note.tags.map((tag) => tag.id);
 
   async function handleSearchChange(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
     const search = event.target.value;
+    setLocalSearch(search);
 
-    const results = await searchNotes(search, {
-      doNotIncludeNoteIds: [...existingNoteRelationIds, noteId],
+    const results = await searchTags(search, {
+      doNotIncludeTagIds: [...existingTags],
     });
 
     if (!results) return;
@@ -52,22 +51,25 @@ export default function NoteConnector({ note, open, setOpen }: Props) {
 
   const debouncedHandleSearchChange = debounce(handleSearchChange, 500);
 
-  async function handleConnectNotes(relatedNoteId: string) {
-    await connectNotes(noteId, relatedNoteId);
-    setOpen(false);
+  async function handleAddTag(tagId: string) {
+    await addTag(noteId, tagId);
     router.refresh();
+    setOpen(false);
   }
 
   function handleClose() {
     setResults([]);
+    setLocalSearch("");
     setOpen(false);
   }
+
+  const showTagCreationSuggestion = !!localSearch;
 
   return (
     <CommandDialog open={open} onOpenChange={handleClose}>
       <CommandInput
         onInput={debouncedHandleSearchChange}
-        placeholder="Type a note's name to search..."
+        placeholder="Type a tag's name to search..."
       />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
@@ -77,12 +79,22 @@ export default function NoteConnector({ note, open, setOpen }: Props) {
               {results.map((result) => (
                 <CommandItem
                   key={result.id}
-                  onSelect={() => handleConnectNotes(result.id)}
+                  onSelect={() => handleAddTag(result.name)}
                   className="cursor-pointer"
                 >
-                  {result.title}
+                  {result.name}
                 </CommandItem>
               ))}
+            </CommandGroup>
+          )}
+          {showTagCreationSuggestion && (
+            <CommandGroup heading="Create tag">
+              <CommandItem
+                onSelect={() => handleAddTag(localSearch)}
+                className="cursor-pointer"
+              >
+                {localSearch}
+              </CommandItem>
             </CommandGroup>
           )}
         </CommandList>

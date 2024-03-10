@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 
 export async function searchNotes(
   search: string,
-  { includeDeleted = false, doNotInclude = [] as string[] } = {}
+  { includeDeleted = false, doNotIncludeNoteIds = [] as string[] } = {}
 ) {
   try {
     return prisma.note.findMany({
@@ -13,9 +13,10 @@ export async function searchNotes(
           { title: { contains: search, mode: "insensitive" } },
           { content: { contains: search, mode: "insensitive" } },
         ],
-        id: { notIn: doNotInclude },
+        id: { notIn: doNotIncludeNoteIds },
         deleted: includeDeleted ? true : false,
       },
+      orderBy: { updatedAt: "desc" },
     });
   } catch (error) {
     return [];
