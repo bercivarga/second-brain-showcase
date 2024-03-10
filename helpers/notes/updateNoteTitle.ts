@@ -20,6 +20,6 @@ export async function updateNoteTitle(
     return null;
   } finally {
     revalidatePath("/notes");
-    revalidatePath(`/notes/${noteId}`);
+    revalidatePath(`/notes/${noteId}`, "page");
   }
 }
