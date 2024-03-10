@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { getNote } from "@/helpers/notes/getNote";
 
+import NoteActions from "./note-actions";
 import NoteEditor from "./note-editor";
 
 type Props = {
@@ -33,8 +34,9 @@ export default async function EditNotePage({ params }: Props) {
   }
 
   return (
-    <main>
+    <main className="flex h-full min-h-screen w-full divide-x">
       <NoteEditor note={note} />
+      <NoteActions note={note} />
     </main>
   );
 }
