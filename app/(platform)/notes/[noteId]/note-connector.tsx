@@ -13,20 +13,28 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { connectNotes } from "@/helpers/notes/connectNotes";
+import { prepareNoteRelations } from "@/helpers/notes/prepareNoteRelations";
 import { searchNotes } from "@/helpers/notes/searchNotes";
+import { INote } from "@/types/platform";
 
 type Props = {
-  noteId: string;
+  note: INote;
   open: boolean;
   setOpen: (open: boolean) => void;
 };
 
 type NotesSearchResult = Awaited<ReturnType<typeof searchNotes>>;
 
-export default function NoteConnector({ noteId, open, setOpen }: Props) {
+export default function NoteConnector({ note, open, setOpen }: Props) {
   const [results, setResults] = useState<NotesSearchResult>([]);
 
   const router = useRouter();
+
+  const { id: noteId } = note;
+
+  const existingNoteRelationIds = prepareNoteRelations(note).map(
+    (note) => note.id
+  );
 
   async function handleSearchChange(
     event: React.ChangeEvent<HTMLInputElement>
@@ -34,7 +42,7 @@ export default function NoteConnector({ noteId, open, setOpen }: Props) {
     const search = event.target.value;
 
     const results = await searchNotes(search, {
-      doNotInclude: [noteId],
+      doNotInclude: [...existingNoteRelationIds, noteId],
     });
 
     if (!results) return;
@@ -50,8 +58,13 @@ export default function NoteConnector({ noteId, open, setOpen }: Props) {
     setOpen(false);
   }
 
+  function handleClose() {
+    setOpen(false);
+    setResults([]);
+  }
+
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandDialog open={open} onOpenChange={handleClose}>
       <CommandInput
         onInput={debouncedHandleSearchChange}
         placeholder="Type a note's name to search..."

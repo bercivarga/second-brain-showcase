@@ -136,7 +136,7 @@ export default function NoteActions({ note }: Props) {
         </div>
       </div>
       <NoteConnector
-        noteId={note.id}
+        note={note}
         open={showNoteConnector}
         setOpen={setShowNoteConnector}
       />
