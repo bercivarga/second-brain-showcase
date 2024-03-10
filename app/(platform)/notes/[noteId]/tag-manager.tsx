@@ -63,7 +63,11 @@ export default function TagManager({ note, open, setOpen }: Props) {
     setOpen(false);
   }
 
-  const showTagCreationSuggestion = !!localSearch;
+  const showTagCreationSuggestion =
+    !!localSearch &&
+    !results.some(
+      (tag) => tag.name.toLowerCase() === localSearch.toLowerCase()
+    );
 
   return (
     <CommandDialog open={open} onOpenChange={handleClose}>
