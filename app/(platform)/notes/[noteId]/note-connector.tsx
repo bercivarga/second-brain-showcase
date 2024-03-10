@@ -28,22 +28,18 @@ export default function NoteConnector({ noteId, open, setOpen }: Props) {
 
   const router = useRouter();
 
-  function filterOwnNoteFromResults(results: NotesSearchResult) {
-    return results.filter((result) => result.id !== noteId);
-  }
-
   async function handleSearchChange(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
     const search = event.target.value;
 
-    const results = await searchNotes(search);
+    const results = await searchNotes(search, {
+      doNotInclude: [noteId],
+    });
 
     if (!results) return;
 
-    const filteredResults = filterOwnNoteFromResults(results);
-
-    setResults(filteredResults);
+    setResults(results);
   }
 
   const debouncedHandleSearchChange = debounce(handleSearchChange, 500);
@@ -65,12 +61,12 @@ export default function NoteConnector({ noteId, open, setOpen }: Props) {
         <CommandList>
           {!!results.length && (
             <CommandGroup heading="Suggestions">
-              {results.map((result, index) => (
+              {results.map((result) => (
                 <CommandItem
                   key={result.id}
                   onSelect={() => handleConnectNotes(result.id)}
                 >
-                  {index + 1}. {result.title}
+                  {result.title}
                 </CommandItem>
               ))}
             </CommandGroup>
