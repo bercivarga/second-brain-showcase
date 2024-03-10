@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "CF Showcase Project",
-  description: "Made for CLEVER°FRANKE by @berci.dev",
+  title: "Second Brain Showcase Project",
+  description: "This is a showcase portfolio project. Made by @berci.dev",
 };
 
 export default function Home() {
