@@ -4,6 +4,7 @@ import { PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { deleteNote } from "@/helpers/notes/deleteNote";
 import { INote } from "@/types/platform";
@@ -65,7 +66,7 @@ export default function NoteActions({ note }: Props) {
                 key={tag.id}
                 className="rounded-full bg-slate-200 px-3 py-1 text-sm"
               >
-                {tag.name}
+                <Badge variant="outline">{tag.name}</Badge>
               </li>
             ))}
           </ul>
