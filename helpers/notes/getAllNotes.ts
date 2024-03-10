@@ -22,7 +22,7 @@ export async function getAllNotes() {
 
     const notes = await prisma.note.findMany({
       where: { authorId: dbUser.id, deleted: false },
-      include: { tags: true },
+      include: { tags: true, relatedNotes: true, relatedTo: true },
       orderBy: { updatedAt: "desc" },
       take: 10,
     });
