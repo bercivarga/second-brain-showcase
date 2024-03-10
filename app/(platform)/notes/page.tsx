@@ -12,17 +12,32 @@ import {
 } from "@/components/ui/table";
 import { getAllNotes } from "@/helpers/notes/getAllNotes";
 
+import NotesPagination from "./notes-pagination";
+
+type Props = {
+  params: {};
+  searchParams: { page?: string };
+};
+
 export const metadata: Metadata = {
   title: "All notes",
 };
 
-export default async function AllNotesPage() {
-  const notes = await getAllNotes();
+export default async function AllNotesPage({ searchParams }: Props) {
+  const currentPage = searchParams.page ? parseInt(searchParams.page) : 1;
+
+  const { count, notes, totalPages } =
+    (await getAllNotes({
+      page: currentPage,
+      paginate: true,
+    })) ?? {};
 
   return (
     <main className="px-6 py-4">
       <Table>
-        <TableCaption>A list of your recent notes.</TableCaption>
+        <TableCaption>
+          A list of your recent notes ({notes?.length ?? 0} of {count})
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Title</TableHead>
@@ -60,6 +75,7 @@ export default async function AllNotesPage() {
           ))}
         </TableBody>
       </Table>
+      <NotesPagination currentPage={currentPage} totalPages={totalPages} />
     </main>
   );
 }

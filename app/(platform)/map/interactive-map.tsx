@@ -7,7 +7,7 @@ import { getAllNotes } from "@/helpers/notes/getAllNotes";
 import { prepareNoteRelations } from "@/helpers/notes/prepareNoteRelations";
 
 type Props = {
-  notes: NonNullable<Awaited<ReturnType<typeof getAllNotes>>>;
+  notes: NonNullable<Awaited<ReturnType<typeof getAllNotes>>>["notes"];
 };
 
 type GraphData = {
