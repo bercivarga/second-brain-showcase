@@ -13,17 +13,13 @@ export default function Home() {
   const { userId } = auth();
 
   return (
-    <main className="flex min-h-screen items-center justify-center">
+    <main className="relative flex min-h-screen items-center justify-center">
       <div className="flex flex-col gap-4 p-6 md:items-center md:text-center">
         <h2>
           Welcome to your
           <br /> Second Brain
         </h2>
-        <p>
-          {userId
-            ? "Click on the button to proceed to the platform."
-            : "Sign in or sign up in order to explore the app."}
-        </p>
+        {!userId && <p>Sign in or sign up in order to explore the app.</p>}
         <div className="flex gap-2">
           {userId ? (
             <Link href="/notes">
@@ -41,6 +37,28 @@ export default function Home() {
           )}
         </div>
       </div>
+      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-center text-sm text-slate-400">
+        This is a showcase portfolio project, inspired by{" "}
+        <a
+          href="https://reflect.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          Reflect
+        </a>
+        .
+        <br />
+        Made by{" "}
+        <a
+          href="https://berci.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline"
+        >
+          @berci.dev
+        </a>
+      </p>
     </main>
   );
 }
