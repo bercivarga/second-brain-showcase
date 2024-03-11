@@ -1,6 +1,8 @@
+import { PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
 import { Metadata } from "next";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -34,15 +36,32 @@ export default async function AllNotesPage({ searchParams }: Props) {
 
   return (
     <main className="px-6 py-4">
-      <Table>
+      <div className="flex w-full items-center justify-between ">
+        <h5 className="font-bold">Notes</h5>
+        <div className="flex items-center gap-4">
+          <Link href="/notes/trash">
+            <Button variant="outline" className="gap-2">
+              <TrashIcon />
+              Trash bin
+            </Button>
+          </Link>
+          <Link href="/notes/new">
+            <Button className="gap-2">
+              <PlusCircledIcon />
+              Create
+            </Button>
+          </Link>
+        </div>
+      </div>
+      <Table className="mt-4">
         <TableCaption>
-          A list of your recent notes ({notes?.length ?? 0} of {count})
+          A list of your recent notes (showing {notes?.length ?? 0} of {count})
         </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Title</TableHead>
             <TableHead className="w-[300px]">Snippet</TableHead>
-            <TableHead className="w-[200px]">Tags</TableHead>
+            <TableHead className="w-[300px]">Tags</TableHead>
             <TableHead className="text-right">Updated</TableHead>
           </TableRow>
         </TableHeader>
@@ -63,7 +82,7 @@ export default async function AllNotesPage({ searchParams }: Props) {
                     : note.content}
                 </Link>
               </TableCell>
-              <TableCell>
+              <TableCell className="max-w-[300px] overflow-hidden overflow-ellipsis">
                 {note.tags.map((tag) => tag.name).join(", ")}
               </TableCell>
               <TableCell className="text-right">
