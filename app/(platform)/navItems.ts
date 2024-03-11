@@ -1,25 +1,15 @@
-import {
-  CardStackIcon,
-  GridIcon,
-  HomeIcon,
-  Pencil2Icon,
-} from "@radix-ui/react-icons";
+import { CardStackIcon, GridIcon, Pencil2Icon } from "@radix-ui/react-icons";
 
 const navItems = [
   {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: HomeIcon,
+    label: "All notes",
+    href: "/notes",
+    icon: CardStackIcon,
   },
   {
     label: "New note",
     href: "/notes/new",
     icon: Pencil2Icon,
-  },
-  {
-    label: "All notes",
-    href: "/notes",
-    icon: CardStackIcon,
   },
   {
     label: "Map",

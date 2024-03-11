@@ -4,6 +4,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Archivo_Black, Inter } from "next/font/google";
 import { twMerge } from "tailwind-merge";
 
+import BaseHead from "./base-head";
+
 const bodyFont = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -25,6 +27,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <BaseHead />
         <body
           className={twMerge(
             bodyFont.variable,
