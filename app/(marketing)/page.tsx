@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+import LandingBgAnimation from "./landing-bg-animation";
+
 export const metadata: Metadata = {
   title: "Second Brain | Home",
   description: "This is a showcase portfolio project. Made by @berci.dev",
@@ -14,7 +16,10 @@ export default function Home() {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center">
-      <div className="flex flex-col gap-4 p-6 md:items-center md:text-center">
+      <div className="absolute inset-0 -z-10">
+        <LandingBgAnimation />
+      </div>
+      <div className="flex flex-col gap-4 p-6 text-white md:items-center md:text-center">
         <h2>
           Welcome to your
           <br /> Second Brain
@@ -47,7 +52,6 @@ export default function Home() {
         >
           Reflect
         </a>
-        .
         <br />
         Made by{" "}
         <a
