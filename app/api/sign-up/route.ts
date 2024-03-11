@@ -43,5 +43,5 @@ export async function GET() {
     return new NextResponse("Error creating user", { status: 500 });
   }
 
-  redirect("/dashboard");
+  redirect("/notes");
 }

@@ -22,8 +22,8 @@ export default function Home() {
         <p>Sign in or sign up in order to explore the app.</p>
         <div className="flex gap-2">
           {userId ? (
-            <Link href="/dashboard">
-              <Button>To dashboard</Button>
+            <Link href="/notes">
+              <Button>To notes</Button>
             </Link>
           ) : (
             <>

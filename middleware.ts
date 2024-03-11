@@ -4,7 +4,7 @@ export default authMiddleware({
   // Routes that can be accessed while signed out
   publicRoutes: [
     // 👇 Leaving this here so that later I can adjust the middleware logic according to the project's needs
-    // /^(?!\/dashboard).*/, // Match routes that don't start with "/dashboard"
+    // /^(?!\/notes).*/, // Match routes that don't start with "/notes"
     "/", // Match the root route
   ],
   // Routes that can always be accessed, and have

@@ -1,6 +1,6 @@
 "use client";
 
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { MagnifyingGlassIcon, TrashIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -20,6 +20,15 @@ import {
 } from "@/components/ui/command";
 
 import navItems from "./navItems";
+
+const commandItems: typeof navItems = [
+  ...navItems,
+  {
+    href: "/notes/trash",
+    icon: TrashIcon,
+    label: "View trash bin",
+  },
+];
 
 export default function SearchBar() {
   const [showSearchCommand, setShowSearchCommand] = useState(false);
@@ -46,7 +55,7 @@ export default function SearchBar() {
       >
         <div className="flex items-center gap-3">
           <MagnifyingGlassIcon />
-          <span>Search</span>
+          <span>Commands</span>
         </div>
         <span>⌘K</span>
       </Button>
@@ -58,7 +67,7 @@ export default function SearchBar() {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Suggestions">
-            {navItems.map((item) => (
+            {commandItems.map((item) => (
               <Link href={item.href} key={item.href}>
                 <CommandItem
                   onSelect={() => {
