@@ -2,7 +2,6 @@
 
 "use client";
 
-import { useUser } from "@clerk/nextjs";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
@@ -12,8 +11,12 @@ import { Button } from "@/components/ui/button";
 
 const PARTICLE_COUNT = 1000;
 
-const SPEED_FAST = 10;
+const SPEED_FAST = 20;
 const SPEED_NORMAL = 1;
+
+function lerp(start: number, end: number, t: number) {
+  return start * (1 - t) + end * t;
+}
 
 function colorPicker(randomizer: number) {
   switch (true) {
@@ -40,17 +43,29 @@ function colorPicker(randomizer: number) {
   }
 }
 
-function Particle({ speed }: { speed: number }) {
+function generateParticles() {
+  const particles = new Array(PARTICLE_COUNT).fill(null).map(() => {
+    const x = (Math.random() - 0.5) * 10;
+    const y = (Math.random() - 0.5) * 10;
+    const z = (Math.random() - 0.5) * 20;
+    const color = colorPicker(Math.random());
+
+    return { x, y, z, color };
+  });
+
+  return particles;
+}
+
+function Particle({
+  speed,
+  particleData,
+}: {
+  speed: number;
+  particleData: ReturnType<typeof generateParticles>[0];
+}) {
   const particleRef = useRef<Mesh>(null);
 
-  const x = (Math.random() - 0.5) * 10;
-  const y = (Math.random() - 0.5) * 10;
-  const z = (Math.random() - 0.5) * 20;
-
-  const particleColor = useMemo(() => {
-    const randomizer = Math.random();
-    return colorPicker(randomizer);
-  }, []);
+  const { x, y, z, color } = particleData;
 
   useFrame(() => {
     if (!particleRef.current) return;
@@ -67,37 +82,43 @@ function Particle({ speed }: { speed: number }) {
   return (
     <mesh ref={particleRef} position={[x, y, z]}>
       <sphereGeometry args={[0.02, 10, 10]} />
-      <meshStandardMaterial color={particleColor} />
+      <meshStandardMaterial color={color} />
     </mesh>
   );
 }
 
 function Scene({ buttonHovered }: { buttonHovered: boolean }) {
-  const [speed, setSpeed] = useState(SPEED_NORMAL);
+  const speedRef = useRef(SPEED_NORMAL);
 
-  const speedRef = useRef(speed);
-
-  speedRef.current = speed;
+  const particles = useMemo(() => generateParticles(), []);
 
   useFrame(() => {
     if (buttonHovered) {
-      setSpeed(SPEED_FAST);
+      speedRef.current = lerp(speedRef.current, SPEED_NORMAL, 0.1);
     } else {
-      setSpeed(SPEED_NORMAL);
+      speedRef.current = lerp(speedRef.current, SPEED_FAST, 0.1);
     }
   });
 
-  const particles = Array.from({ length: PARTICLE_COUNT }).map((_, index) => (
-    <Particle key={index} speed={speed} />
-  ));
-
-  return <>{particles}</>;
+  return (
+    <>
+      {particles.map((particleData, index) => (
+        <Particle
+          key={index}
+          speed={speedRef.current}
+          particleData={particleData}
+        />
+      ))}
+    </>
+  );
 }
 
-export default function LandingBgAnimation() {
+export default function LandingBgAnimation({
+  isSignedIn,
+}: {
+  isSignedIn: boolean;
+}) {
   const [buttonHovered, setButtonHovered] = useState(false);
-
-  const { isSignedIn } = useUser();
 
   function handleMouseEnter() {
     setButtonHovered(true);
@@ -122,12 +143,20 @@ export default function LandingBgAnimation() {
           <Scene buttonHovered={buttonHovered} />
         </Canvas>
       </div>
-      {/* <div className="flex flex-col gap-4 p-6 text-white md:items-center md:text-center">
-        <h2>
+      <div className="flex flex-col gap-4 p-6 md:items-center md:text-center">
+        <h2 className="text-white">
           Welcome to your
           <br /> Second Brain
         </h2>
-        {!isSignedIn && <p>Sign in or sign up in order to explore the app.</p>}
+        {!isSignedIn && (
+          <div className="max-w-lg text-white">
+            <p>
+              Second Brain is your companion for organizing your thoughts and
+              ideas. Collect and visualize your knowledge in one place.
+            </p>
+            <p>Sign in or sign up in order to explore the app.</p>
+          </div>
+        )}
         <div className="flex gap-2">
           {isSignedIn ? (
             <Link href="/notes">
@@ -139,12 +168,14 @@ export default function LandingBgAnimation() {
                 <Button {...mouseEvents}>Sign in</Button>
               </Link>
               <Link href="/sign-up">
-                <Button variant="outline">Sign up</Button>
+                <Button variant="outline" {...mouseEvents}>
+                  Sign up
+                </Button>
               </Link>
             </>
           )}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
