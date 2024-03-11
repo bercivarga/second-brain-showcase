@@ -6,9 +6,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex h-screen divide-x">
+    <div className="flex h-screen max-h-screen divide-x">
       <SideNav />
-      <div className="w-full">{children}</div>
+      <div className="h-full max-h-full w-full overflow-y-scroll">
+        {children}
+      </div>
     </div>
   );
 }
