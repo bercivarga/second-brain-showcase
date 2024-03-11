@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a portfolio showcase project inspired by [Reflect](https://reflect.app). The project uses `Next.js v14.x` as a full-stack framework, with `TailwindCSS` as the CSS framework and `shadcdn/ui` for more complex components. I use `Clerk`'s Next.js SDK for authentication and user management, while the rest of the backend and the database is hosted on [Railway](https://railway.app). I use `Prisma ORM` in combination with a `postgresql` DB. For the front-end deployments, I use `Vercel`.
+
+This project was made over a weekend and has some missing features still:
+
+- [ ] Test coverage with Vitest
+- [ ] Fully functional markdown editor for notes
+- [ ] Browsing notes based on tags
+- [ ] Browse notes in an agenda view based on creation/update date
+- [ ] Dark mode
+- [ ] Skeletons for loading pages
+- [ ] Home page particles refactors for better performance
+- [ ] Note sentiment score assignments with ChatGTP
+- [ ] Visualize sentiment score on the 3D note map
+- [ ] Create own 3D mapping solution as the currently used library has some issues
 
 ## Getting Started
 
-First, run the development server:
+Before building the project, it is key to set up the required environment variables needed for the project. Make sure that you have a `.env` or `.env.local` file at the root of your project containing the following variables:
 
 ```bash
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/notes
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/api/sign-up
+DATABASE_URL=
+```
+
+Make sure that you have a `postgresql` database hosted somewhere (or running locally). Also, you will need a `Clerk` project in order to make the authentication flow work. More info on this can be found in the [Clerk docs](https://clerk.com/docs/quickstarts/nextjs).
+
+This project uses `Prisma` as the ORM. If you are creating a new database, make sure that you migrate with Prisma so that you have the tables ready for the incoming requests. More info on this can be found in the [Prisma docs](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases-typescript-postgresql).
+
+## Running the project locally
+
+```bash
+# First, install the dependencies:
+npm install
+
+# The previous command should also install the Husky pre-commit hooks.
+# You can make sure that the scripts initialized by running this command:
+npm prepare
+
+# To run the development server, run:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
