@@ -32,6 +32,7 @@ export default function NotesPagination({
 
   const prevPageHref = `${path}?page=${currentPage - 1}`;
   const nextPageHref = `${path}?page=${currentPage + 1}`;
+  const lastPageHref = `${path}?page=${totalPages}`;
 
   return (
     <Pagination>
@@ -51,11 +52,6 @@ export default function NotesPagination({
         <PaginationItem className="pointer-events-none opacity-50">
           <PaginationLink href="#">{currentPage}</PaginationLink>
         </PaginationItem>
-        {totalPages && totalPages > currentPage + 2 && (
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-        )}
         {isThereANextPage && (
           <>
             <PaginationItem>
@@ -63,6 +59,13 @@ export default function NotesPagination({
                 {currentPage + 1}
               </PaginationLink>
             </PaginationItem>
+            {totalPages && totalPages > currentPage + 2 && (
+              <PaginationItem>
+                <PaginationLink href={lastPageHref}>
+                  <PaginationEllipsis />
+                </PaginationLink>
+              </PaginationItem>
+            )}
             <PaginationItem>
               <PaginationNext href={nextPageHref} />
             </PaginationItem>

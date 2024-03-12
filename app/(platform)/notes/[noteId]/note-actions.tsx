@@ -63,7 +63,7 @@ export default function NoteActions({ note }: Props) {
 
   return (
     <>
-      <div className="flex w-80 flex-col bg-slate-100/50 p-6 text-sm text-slate-400">
+      <div className="flex h-full w-80 flex-col overflow-y-scroll bg-slate-100/50 p-6 text-sm text-slate-400">
         <div className="flex flex-col items-stretch gap-4">
           <span className="block">Connected notes</span>
           {noteRelations.length === 0 ? (
@@ -83,8 +83,8 @@ export default function NoteActions({ note }: Props) {
                       variant={"link"}
                       size={"sm"}
                     >
-                      {relatedNote.title.length > 32
-                        ? `${relatedNote.title.slice(0, 32)}...`
+                      {relatedNote.title.length > 20
+                        ? `${relatedNote.title.slice(0, 20)}...`
                         : relatedNote.title}
                     </Button>
                   </Link>

@@ -9,7 +9,8 @@
     "test": "vitest --passWithNoTests",
     "lint": "next lint --fix",
     "prepare": "husky",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "seed": "npx ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.9",
